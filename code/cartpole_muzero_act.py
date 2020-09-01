@@ -1,6 +1,7 @@
-from cartpol_muzero_train import naive_search
+from cartpole_muzero_train import naive_search
 import gym
 import tensorflow as tf
+import numpy as np
 
 
 
@@ -10,12 +11,14 @@ env.observation_space, env.action_space
 # sort of
 current_state = env.reset()
 mu = tf.keras.models.load_model('../Training/model/mu')
-for sn in range(100):
-  ret = naive_search(current_state, model=mu)
-  v,aa = ret[0]
-  print(aa[0], v)
+done = False
+while not(done):
+  policy = naive_search(current_state, model=mu)
+  a_1 = np.random.choice([0,1,2,3], p=policy)
+  # v,aa = ret[0]
+  # print(aa[0], v)
   env.render()
-  _,r,done,_ = env.step(aa[0])
+  _,r,done,_ = env.step(a_1)
   if done:
     print("DONE", sn)
     break

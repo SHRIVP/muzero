@@ -171,7 +171,19 @@ def run_episode():
 
 def get_training_episodes():
   # global replay_buffer
+  if random.randint(0,10) == 0 or len(replay_buffer) <10:
+    replay_buffer = replay_buffer[0:20]
+    dat = run_episode()
+    replay_buffer.append(dat)
+  else:
+    rdat= random.choice(replay_buffer)
   dat = run_episode()
+
+  #TODO: What is this for?
+
+  dat=[]
+  for s_0, p_0, a_1, r_1 in rdat:
+    dat.append((s_0, naive_search(s_0, a_1, r_1))
 
   # Compute value function for the complete episode
 
@@ -197,7 +209,7 @@ def get_training_episodes():
 
 
 
-for i in range(1):
+for i in range(100):
   X, Y = [], []
   for _ in range(16):
     x, y = get_training_episodes()
